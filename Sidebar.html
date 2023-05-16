@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <form id="settingsForm">
+      <label for="openAiApiKey">OpenAI API Key:</label><br>
+      <input type="text" id="openAiApiKey" name="openAiApiKey"><br>
+      <label for="anthropicApiKey">Anthropic API Key:</label><br>
+      <input type="text" id="anthropicApiKey" name="anthropicApiKey"><br>
+      <input type="submit" value="Save">
+    </form>
+    <script>
+      document.getElementById('settingsForm').addEventListener('submit', saveSettings);
+
+      function saveSettings(e) {
+        e.preventDefault();
+        var openAiApiKey = document.getElementById('openAiApiKey').value;
+        var anthropicApiKey = document.getElementById('anthropicApiKey').value;
+        if (openAiApiKey !== "") {
+          google.script.run.saveApiKey(openAiApiKey, "OpenAI");
+        }
+        if (anthropicApiKey !== "") {
+          google.script.run.saveApiKey(anthropicApiKey, "Anthropic");
+        }
+      }
+
+      window.onload = function() {
+        google.script.run.withSuccessHandler(function(openAiApiKey) {
+          document.getElementById('openAiApiKey').value = openAiApiKey;
+        }).getApiKey("OpenAI");
+        google.script.run.withSuccessHandler(function(anthropicApiKey) {
+          document.getElementById('anthropicApiKey').value = anthropicApiKey;
+        }).getApiKey("Anthropic");
+      }
+    </script>
+  </body>
+</html>
+
