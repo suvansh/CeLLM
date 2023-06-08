@@ -13,43 +13,28 @@ function showSidebar() {
   SpreadsheetApp.getUi().showSidebar(htmlOutput);
 }
 
-function saveApiKey(apiKey, type) {
-  var propertyName = null;
-  if (type == "OpenAI") {
-    propertyName = openai_api_key_name;
-  }
-  else if (type == "Anthropic") {
-    propertyName = anthropic_api_key_name;
-  }
-  else {
-    throw new Error('Model type not recognized: ' + type);
-  }
-  var scriptProperties = PropertiesService.getUserProperties();
-  scriptProperties.setProperty(propertyName, apiKey);
+function setProperty(key, value) {
+  PropertiesService.getUserProperties().setProperty(key, value);
 }
 
-function getApiKey(type) {
-  var propertyName = null;
-  if (type == "OpenAI") {
-    propertyName = openai_api_key_name;
-  }
-  else if (type == "Anthropic") {
-    propertyName = anthropic_api_key_name;
-  }
-  else if (type == "cellm") {
-    propertyName = cellm_api_key_name;
-  }
-  else {
-    throw new Error('Model type not recognized: ' + type);
-  }
-  var apiKey = PropertiesService.getUserProperties().getProperty(propertyName);
-  return apiKey;
+function getProperty(key) {
+  return PropertiesService.getUserProperties().getProperty(key);
 }
 
-function CELLM(prompt, cellValue, type="OpenAI", max_tokens=250, temperature=0.9) {
-  return callLlmOnCell(prompt, cellValue, type=type, max_tokens=max_tokens, temperature=temperature);
+function CELLM(prompt, cellValue, llm="OpenAI", arcus=false, max_tokens=250, temperature=0.3) {
+  return callLlmOnCell(prompt, cellValue, type=llm, arcus=arcus, max_tokens=max_tokens, temperature=temperature);
 }
 
-function CELLM_URL(prompt, url, type="OpenAI", max_tokens=250, temperature=0.9) {
-  return callLlmOnUrl(prompt, url, type=type, max_tokens=max_tokens, temperature=temperature);
+function CELLM_EX(exampleInputs, exampleOutputs, testInput, llm="OpenAI", arcus=false, max_tokens=250, temperature=0.3) {
+  var minLength = Math.min(exampleInputs.length, exampleOutputs.length);
+  var prompt = 'Given the following example inputs and outputs, please provide the output for the new input:\n';
+  for (var i = 0; i < minLength; i++) {
+    prompt += 'Input: ' + exampleInputs[i][0] + ', Output: ' + exampleOutputs[i][0] + '\n';
+  }
+  prompt += 'New input: ' + testInput + ', New output: ';
+  return callLlm(prompt, "", type=llm, arcus=false, max_tokens=max_tokens, temperature=temperature); // Arcus not supported for this yet
+}
+
+function CELLM_URL(prompt, url, llm="OpenAI", arcus=false, max_tokens=250, temperature=0.3) {
+  return callLlmOnUrl(prompt, url, type=llm, arcus=false, max_tokens=max_tokens, temperature=temperature); // Arcus not supported for this yet
 }

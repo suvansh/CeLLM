@@ -1,5 +1,6 @@
-function callLlmOpenAI(prompt, system_prompt="", max_tokens=null, temperature=null) {
-  var apiKey = PropertiesService.getUserProperties().getProperty(openai_api_key_name);
+function callLlmOpenAI(prompt, system_prompt="", model=null, max_tokens=250, temperature=0.9) {
+  var apiKey = getProperty(openai_api_key_name);
+  model = (model !== null) ? model : "gpt-3.5-turbo";
 
   var messages = [
     {"role": "user", "content": prompt}
@@ -15,9 +16,10 @@ function callLlmOpenAI(prompt, system_prompt="", max_tokens=null, temperature=nu
       "Authorization": "Bearer " + apiKey,
     },
     payload: JSON.stringify({
-      model: "gpt-3.5-turbo",
+      model: model,
       messages: messages,
-      temperature: 0.5
+      temperature: temperature,
+      max_tokens: max_tokens
     }),
   };
   var response = UrlFetchApp.fetch(openai_api_url, requestOptions);

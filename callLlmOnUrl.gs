@@ -1,10 +1,9 @@
-function callLlmOnUrl(prompt, url, type="OpenAI", max_tokens=250, temperature=0.9) {
+function callLlmOnUrl(prompt, url, type="OpenAI", arcus=false, max_tokens=250, temperature=0.3) {
+  // doesn't support Arcus
   var webpageContent = fetchWebpageContent(url);
-  Logger.log("Webpage content: %s", webpageContent);
   var systemPrompt = "You will be given the contents of a webpage. Respond to the prompt concisely using the content of the page."
-  prompt = prompt.replace('{input}', webpageContent);
-
-  return callLlm(prompt, system_prompt=systemPrompt, type=type, max_tokens=max_tokens, temperature=temperature);
+  let filledPrompt = prompt.includes('{input}') ? prompt.replace('{input}', webpageContent) : prompt + "\n" + webpageContent;
+  return callLlm(filledPrompt, system_prompt=systemPrompt, type=type, arcus=arcus, max_tokens=max_tokens, temperature=temperature);
 }
 
 
