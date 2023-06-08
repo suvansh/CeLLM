@@ -1,8 +1,8 @@
 function arcusCall(prompt) {
   var apiKey = getProperty(arcus_api_key_name);
-  var projectId = getProperty(arcus_project_id_name);
-  if (!apiKey || !projectId) {
-    Logger.log("To use Arcus, you need both API key and Project ID. Falling back to original prompt.")
+  var projectId = "TKAAKBsUAM"; // hardcode CeLLM Arcus Project ID
+  if (!apiKey) {
+    Logger.log("To use Arcus, you need to set an Arcus API key in CeLLM --> Settings. Falling back to original prompt.")
     return prompt;
   }
   var requestOptions = {

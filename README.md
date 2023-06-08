@@ -12,7 +12,7 @@ chmod +x gen_all.sh
 
 
 # Documentation
-Note that the spreadsheet functions (starting with `CELLM`) must include all arguments in order. That means if you want to specify the temperature, you must specify all preceding arguments as well. This is due to lack of support in JavaScript for keyword arguments.
+Note that the spreadsheet functions (starting with `CELLM`) must include arguments in order. That means if you want to specify the temperature, you must specify all preceding arguments as well. This is due to lack of support in JavaScript for keyword arguments.
 ## Generate List
 This functionality is useful for using LLMs to generate lists of items across multiple cells. Due to access limitations, this functionality can't be accomplished through spreadsheet functions, so it's tucked away in **CeLLM &rarr; Generate List**.
 First input: prompt describing list |  Second input: cell starting the list | Output
@@ -25,16 +25,18 @@ This is the spreadsheet function used to apply a prompt to a cell. The function 
 ```
 CELLM(prompt, input, llm, arcus, max_tokens, temperature)
 ```
-The first two arguments are required, and the rest are optional.
+The first argument is required, and the rest are optional, though `input` will usually be specified as a spreadsheet cell value to be inserted into the prompt.
 - `prompt` (string): The prompt to apply to the input. Any occurrences of the string "{input}" in the prompt will be replaced with the value of the `input` parameter. If no occurrences are found, the input will be appended to the end of the prompt instead.
-- `input` (string): The value to be combined with the prompt as described above.
+- `input` (string): The value to be combined with the prompt as described above. Defaults to the empty string.
 - `llm` (optional, string): One of "OpenAI" (default) or "Anthropic", optionally including a colon-separated model name selected from "gpt-3.5-turbo" (default) or "gpt-4" (if your API key has access) for OpenAI, or the model options found [here](https://console.anthropic.com/docs/api/reference#-v1-complete) (default "claude-instant-v1") for Anthropic. For example, "OpenAI:gpt-4" uses OpenAI's GPT-4 model, and "Anthropic:claude-v1-100k" uses Anthropic's Claude v1 model that accepts a 100k token context window.
-- `arcus` (optional, boolean): Whether or not to use Arcus' [prompt enrichment](https://app.arcus.co/docs/prompt/key-concepts/) to add in relevant data to the prompt when available. Requires Arcus API key and Project ID to be set in **CeLLM &rarr; Settings**. Default `false`.
+- `arcus` (optional, boolean): Whether or not to use Arcus' [prompt enrichment](https://app.arcus.co/docs/prompt/key-concepts/) to add in relevant data to the prompt when available. Requires Arcus API key to be set in **CeLLM &rarr; Settings**. Default `false`.
 - `max_tokens` (integer): The maximum number of tokens allowed for the LLM response. Defaults to 250 to prevent rapid cost increases (OpenAI and Anthropic charge by the token).
 - `temperature` (float): A value between 0-2 (OpenAI) or 0-1 (Anthropic). Per the OpenAI documentation, higher values will make the output more random, while lower values will make it more focused and deterministic. Defaults to 0.3.
 
-<img src="screenshots/cellm.png" alt="An example of the CELLM function to write stories about creatures from Greek mythology." width="70%" title="An example of the CELLM function.">
-<img src="screenshots/arcus.png" alt="An example of Arcus prompt enrichment providing relevant contextual information to reduce LLM hallucinations and improve accuracy." width="28%" title="An example of Arcus prompt enrichment providing relevant contextual information to reduce LLM hallucinations and improve accuracy.">
+<img src="screenshots/cellm_base.png" alt="An example of the CELLM function to write stories about creatures from Greek mythology." width="50%" title="An example of the CELLM function.">
+<img src="screenshots/arcus.png" alt="An example of Arcus prompt enrichment providing relevant contextual information to reduce LLM hallucinations and improve accuracy." width="30%" title="An example of Arcus prompt enrichment providing relevant contextual information to reduce LLM hallucinations and improve accuracy.">
+<img src="screenshots/cellm.png" alt="An example of the CELLM function to write stories about creatures from Greek mythology." width="75%" title="An example of the CELLM function.">
+
 
 
 ## `CELLM_EX`

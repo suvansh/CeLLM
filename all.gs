@@ -22,7 +22,7 @@ function getProperty(key) {
   return PropertiesService.getUserProperties().getProperty(key);
 }
 
-function CELLM(prompt, cellValue, llm="OpenAI", arcus=false, max_tokens=250, temperature=0.3) {
+function CELLM(prompt, cellValue="", llm="OpenAI", arcus=false, max_tokens=250, temperature=0.3) {
   return callLlmOnCell(prompt, cellValue, type=llm, arcus=arcus, max_tokens=max_tokens, temperature=temperature);
 }
 
@@ -45,9 +45,9 @@ function CELLM_URL(prompt, url, llm="OpenAI", arcus=false, max_tokens=250, tempe
 // FILE: arcus.gs
 function arcusCall(prompt) {
   var apiKey = getProperty(arcus_api_key_name);
-  var projectId = getProperty(arcus_project_id_name);
-  if (!apiKey || !projectId) {
-    Logger.log("To use Arcus, you need both API key and Project ID. Falling back to original prompt.")
+  var projectId = "TKAAKBsUAM"; // hardcode CeLLM Arcus Project ID
+  if (!apiKey) {
+    Logger.log("To use Arcus, you need to set an Arcus API key in CeLLM --> Settings. Falling back to original prompt.")
     return prompt;
   }
   var requestOptions = {
@@ -230,7 +230,6 @@ openai_api_key_name = 'OpenAI_API_KEY';
 openai_api_url = "https://api.openai.com/v1/chat/completions";
 
 arcus_api_key_name = 'Arcus_API_KEY';
-arcus_project_id_name = 'Arcus_PROJECT_ID';
 arcus_api_url = "https://api.arcus.co/prompt/enrich";
 
 

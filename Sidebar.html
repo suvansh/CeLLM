@@ -5,22 +5,12 @@
   </head>
   <body>
     <form id="settingsForm">
-      <fieldset>
-        <legend>LLM Settings</legend>
-        <label for="openAiApiKey">OpenAI API Key (<a href="https://platform.openai.com/account/api-keys" rel="noreferrer nofllow" target="_blank">Find Yours</a>):</label><br>
-        <input type="text" id="openAiApiKey" name="openAiApiKey"><br>
-        <label for="anthropicApiKey">Anthropic API Key (<a href="https://console.anthropic.com/account/keys" rel="noreferrer nofllow" target="_blank">Find Yours</a>):</label><br>
-        <input type="text" id="anthropicApiKey" name="anthropicApiKey"><br>
-      </fieldset>
-      
-      <fieldset>
-        <legend>Arcus Settings (<a href="https://app.arcus.co/docs/arcus/getting-started/authentication/" rel="noreferrer nofllow" target="_blank">Setup</a>)</legend>
-        <label for="arcusApiKey">Arcus API Key (<a href="https://app.arcus.co/settings/" rel="noreferrer nofllow" target="_blank">Find Yours</a>):</label><br>
-        <input type="text" id="arcusApiKey" name="arcusApiKey"><br>
-        <label for="arcusProjectId">Arcus Project ID (<a href="https://app.arcus.co/" rel="noreferrer nofllow" target="_blank">Find Yours</a>):</label><br>
-        <input type="text" id="arcusProjectId" name="arcusProjectId"><br>
-      </fieldset>
-      
+      <label for="openAiApiKey">OpenAI API Key (<a href="https://platform.openai.com/account/api-keys" rel="noreferrer nofollow" target="_blank">Find Yours</a>):</label><br>
+      <input type="text" id="openAiApiKey" name="openAiApiKey"><br>
+      <label for="anthropicApiKey">Anthropic API Key (<a href="https://console.anthropic.com/account/keys" rel="noreferrer nofollow" target="_blank">Find Yours</a>):</label><br>
+      <input type="text" id="anthropicApiKey" name="anthropicApiKey"><br>
+      <label for="arcusApiKey">Arcus API Key (<a href="https://app.arcus.co/settings/" rel="noreferrer nofollow" target="_blank">Find Yours</a>):</label><br>
+      <input type="text" id="arcusApiKey" name="arcusApiKey"><br>
       <input type="submit" value="Save">
     </form>
 
@@ -32,7 +22,6 @@
         var openAiApiKey = document.getElementById('openAiApiKey').value;
         var anthropicApiKey = document.getElementById('anthropicApiKey').value;
         var arcusApiKey = document.getElementById('arcusApiKey').value;
-        var arcusProjectId = document.getElementById('arcusProjectId').value;
         if (openAiApiKey !== "") {
           google.script.run.setProperty("OpenAI_API_KEY", openAiApiKey);
         }
@@ -41,9 +30,6 @@
         }
         if (arcusApiKey !== "") {
           google.script.run.setProperty("Arcus_API_KEY", arcusApiKey);
-        }
-        if (arcusApiKey !== "") {
-          google.script.run.setProperty("Arcus_PROJECT_ID", arcusProjectId);
         }
       }
 
@@ -57,9 +43,6 @@
         google.script.run.withSuccessHandler(function(arcusApiKey) {
           document.getElementById('arcusApiKey').value = arcusApiKey;
         }).getProperty("Arcus_API_KEY");
-        google.script.run.withSuccessHandler(function(arcusProjectId) {
-          document.getElementById('arcusProjectId').value = arcusProjectId;
-        }).getProperty("Arcus_PROJECT_ID");
       }
     </script>
   </body>

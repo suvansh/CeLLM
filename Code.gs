@@ -21,7 +21,7 @@ function getProperty(key) {
   return PropertiesService.getUserProperties().getProperty(key);
 }
 
-function CELLM(prompt, cellValue, llm="OpenAI", arcus=false, max_tokens=250, temperature=0.3) {
+function CELLM(prompt, cellValue="", llm="OpenAI", arcus=false, max_tokens=250, temperature=0.3) {
   return callLlmOnCell(prompt, cellValue, type=llm, arcus=arcus, max_tokens=max_tokens, temperature=temperature);
 }
 
